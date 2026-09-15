@@ -37,6 +37,9 @@
     --warning-border:#FFC107;
     --warning-text:#856404;
     --success-border:#4CAF50;
+    --info-bg:#E3F2FD;
+    --info-border:#1976D2;
+    --info-text:#0D47A1;
   }
   *{box-sizing:border-box;}
   body{
@@ -187,23 +190,6 @@
 
   .field .unit{ color:var(--ink-soft); font-size:11px; white-space:nowrap; }
 
-  /* Tooltip de rango */
-  .field .range-hint{
-    position:absolute;
-    right:0;
-    top:50%;
-    transform:translateY(-50%);
-    font-size:9px;
-    color:#999;
-    pointer-events:none;
-    opacity:0;
-    transition:opacity 0.2s;
-  }
-
-  .field input[type=number]:focus ~ .range-hint{
-    opacity:1;
-  }
-
   /* summary line items */
   .lines{
     background:var(--panel);
@@ -265,7 +251,48 @@
     margin:4px 0;
   }
 
-  button#resetBtn{
+  /* Storage notification */
+  .storage-notification{
+    display:none;
+    background:var(--info-bg);
+    border:1px solid var(--info-border);
+    border-radius:6px;
+    padding:10px 14px;
+    margin-bottom:16px;
+    color:var(--info-text);
+    font-size:11px;
+    align-items:center;
+    gap:8px;
+  }
+
+  .storage-notification.show{
+    display:flex;
+  }
+
+  .storage-notification .icon{
+    font-size:14px;
+  }
+
+  .storage-notification.success{
+    background:#E8F5E9;
+    border-color:#4CAF50;
+    color:#1B5E20;
+  }
+
+  .storage-notification.info{
+    background:var(--info-bg);
+    border-color:var(--info-border);
+    color:var(--info-text);
+  }
+
+  /* Button group */
+  .button-group{
+    display:flex;
+    gap:8px;
+    margin-top:4px;
+  }
+
+  button.btn{
     font-family:'IBM Plex Mono', monospace;
     font-size:12px;
     padding:8px 14px;
@@ -274,10 +301,15 @@
     border-radius:4px;
     color:var(--ink);
     cursor:pointer;
-    margin-top:4px;
     transition:all 0.2s;
   }
-  button#resetBtn:hover{ background:var(--ink); color:var(--panel); }
+  button.btn:hover{ background:var(--ink); color:var(--panel); }
+
+  button.btn.secondary{
+    border:1px solid #D9D4C6;
+    color:#666;
+  }
+  button.btn.secondary:hover{ background:#F5F5F5; }
 
   footer{ color:var(--present-text-soft); font-size:11px; margin-top:20px; }
 
@@ -374,10 +406,11 @@
   @media (max-width:600px){
     .p-metals{ grid-template-columns:1fr; }
     .p-slab .p-sub{ gap:20px; }
+    .button-group{ flex-direction:column; }
   }
 
   @media print{
-    .mode-switch, footer, #resetBtn{ display:none !important; }
+    .mode-switch, footer, #resetBtn, .storage-notification, .button-group{ display:none !important; }
     body{ background:#fff; }
   }
 
@@ -406,6 +439,11 @@
   <div class="p-title-block">
     <h1>MINERO - YACHAQ</h1>
     <div class="p-subtitle">- LIQUIDACIÓN MINERA -</div>
+  </div>
+
+  <div class="storage-notification info" id="storageNotification">
+    <span class="icon">💾</span>
+    <span id="storageMessage">Datos almacenados automáticamente</span>
   </div>
 
   <div class="validation-summary edit-only" id="validationSummary">
@@ -650,9 +688,12 @@
     <div class="line grand"><span>Total a pagar</span><span class="v">$<span id="l_grand">—</span></span></div>
   </div>
 
-  <button id="resetBtn" class="edit-only">Restaurar valores de ejemplo</button>
+  <div class="button-group edit-only">
+    <button id="resetBtn" class="btn">Restaurar valores de ejemplo</button>
+    <button id="clearStorageBtn" class="btn secondary">Borrar almacenamiento</button>
+  </div>
 
-  <footer class="edit-only">Vista resumida: solo se muestran los datos que afectan directamente el total a pagar. Para ver el detalle completo cuadro por cuadro, usa la versión completa.</footer>
+  <footer class="edit-only">Vista resumida: solo se muestran los datos que afectan directamente el total a pagar. Los datos se guardan automáticamente en tu navegador.</footer>
 
   <!-- ================= PRESENTATION PANEL ================= -->
   <div class="presentation-panel">
@@ -704,6 +745,93 @@
 </div>
 
 <script>
+// ============ STORAGE MANAGER ============
+class StorageManager {
+  constructor(storageName = 'calculadora-minera-data') {
+    this.storageName = storageName;
+    this.isAvailable = this.checkAvailability();
+  }
+
+  checkAvailability() {
+    try {
+      const test = '__localStorage_test__';
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch(e) {
+      console.warn('localStorage no disponible:', e);
+      return false;
+    }
+  }
+
+  save(data) {
+    if (!this.isAvailable) return false;
+    try {
+      const json = JSON.stringify({
+        timestamp: new Date().toISOString(),
+        data: data
+      });
+      localStorage.setItem(this.storageName, json);
+      this.showNotification('✅ Datos guardados', 'success');
+      return true;
+    } catch(e) {
+      console.error('Error guardando datos:', e);
+      this.showNotification('❌ Error al guardar', 'error');
+      return false;
+    }
+  }
+
+  load() {
+    if (!this.isAvailable) return null;
+    try {
+      const json = localStorage.getItem(this.storageName);
+      if (!json) return null;
+      const stored = JSON.parse(json);
+      return stored.data;
+    } catch(e) {
+      console.error('Error cargando datos:', e);
+      return null;
+    }
+  }
+
+  clear() {
+    if (!this.isAvailable) return false;
+    try {
+      localStorage.removeItem(this.storageName);
+      this.showNotification('🗑️ Almacenamiento borrado', 'info');
+      return true;
+    } catch(e) {
+      console.error('Error borrando datos:', e);
+      return false;
+    }
+  }
+
+  getLastSavedTime() {
+    if (!this.isAvailable) return null;
+    try {
+      const json = localStorage.getItem(this.storageName);
+      if (!json) return null;
+      const stored = JSON.parse(json);
+      return new Date(stored.timestamp);
+    } catch(e) {
+      return null;
+    }
+  }
+
+  showNotification(message, type = 'info') {
+    const notif = document.getElementById('storageNotification');
+    const msgEl = document.getElementById('storageMessage');
+    if (notif && msgEl) {
+      msgEl.textContent = message;
+      notif.classList.remove('info', 'success', 'error');
+      notif.classList.add('show', type);
+      setTimeout(() => {
+        notif.classList.remove('show');
+      }, 3000);
+    }
+  }
+}
+
 // ============ VALIDATOR CLASS ============
 class InputValidator {
   constructor() {
@@ -721,7 +849,6 @@ class InputValidator {
 
     this.errors = [];
 
-    // Check if empty or NaN
     if (input.value === '' || isNaN(value)) {
       input.classList.remove('valid', 'warning');
       input.classList.add('error');
@@ -729,7 +856,6 @@ class InputValidator {
       return false;
     }
 
-    // Check if value is below minimum
     if (value < min) {
       input.classList.remove('valid', 'warning');
       input.classList.add('error');
@@ -737,7 +863,6 @@ class InputValidator {
       return false;
     }
 
-    // Check if value is above maximum
     if (value > max) {
       input.classList.remove('valid', 'warning');
       input.classList.add('error');
@@ -745,7 +870,6 @@ class InputValidator {
       return false;
     }
 
-    // Valid
     input.classList.remove('error', 'warning');
     input.classList.add('valid');
     this.updateErrorMsg(input, '');
@@ -797,6 +921,7 @@ class InputValidator {
 }
 
 // ============ CALCULATOR LOGIC ============
+const storage = new StorageManager();
 const validator = new InputValidator();
 
 function num(id){ 
@@ -813,11 +938,26 @@ function set(id, text){
   if (el) el.textContent = text;
 }
 
+function getAllInputValues() {
+  const inputs = document.querySelectorAll('input[type=number]');
+  const data = {};
+  inputs.forEach(input => {
+    data[input.id] = input.value;
+  });
+  return data;
+}
+
+function setAllInputValues(data) {
+  Object.entries(data).forEach(([id, value]) => {
+    const input = document.getElementById(id);
+    if (input) {
+      input.value = value;
+    }
+  });
+}
+
 function recalc(){
-  // Validate all inputs before calculating
-  if (!validator.validateAll()) {
-    // Still calculate but show warnings
-  }
+  validator.validateAll();
 
   const tonelaje = num('tonelaje');
   const leyCu = num('leyCu');
@@ -921,17 +1061,20 @@ function recalc(){
   set('p_valorTotal', '$'+fmt(valorTotalNeto));
   set('p_descuentos', '$'+fmt(descuentos));
   set('p_grand', fmt(grandTotal));
+
+  // Guardar en localStorage
+  storage.save(getAllInputValues());
 }
 
 const defaults = {
-  tonelaje:150, leyCu:2.2, leyAg:0, leyAu:0,
-  cuPrice:6.29, agPrice:57.5, auPrice:4043.6,
-  alquiler:55, adelanto:0,
-  h2o:10.1, merma:1, leyCuConc:25.23,
-  pagableCu:100, deducCu:1.35, refCu:0.19, proteccion:0.1,
-  pagableAg:90, deducAg:2, refAg:1.2,
-  pagableAu:90, deducAu:60, refAu:12,
-  maquila:175, analisis:100, traslado:55
+  tonelaje:'150', leyCu:'2.2', leyAg:'0', leyAu:'0',
+  cuPrice:'6.29', agPrice:'57.5', auPrice:'4043.6',
+  alquiler:'55', adelanto:'0',
+  h2o:'10.1', merma:'1', leyCuConc:'25.23',
+  pagableCu:'100', deducCu:'1.35', refCu:'0.19', proteccion:'0.1',
+  pagableAg:'90', deducAg:'2', refAg:'1.2',
+  pagableAu:'90', deducAu:'60', refAu:'12',
+  maquila:'175', analisis:'100', traslado:'55'
 };
 
 // ============ EVENT LISTENERS ============
@@ -944,18 +1087,20 @@ document.querySelectorAll('input[type=number]').forEach(inp => {
   inp.addEventListener('blur', () => {
     validator.validate(inp.id);
   });
-
-  inp.addEventListener('focus', () => {
-    // Optionally show range hint on focus
-  });
 });
 
 document.getElementById('resetBtn').addEventListener('click', () => {
-  Object.entries(defaults).forEach(([id, val]) => {
-    const el = document.getElementById(id);
-    if(el) el.value = val;
-  });
+  setAllInputValues(defaults);
+  storage.save(getAllInputValues());
   recalc();
+});
+
+document.getElementById('clearStorageBtn').addEventListener('click', () => {
+  if (confirm('¿Está seguro de que desea borrar todos los datos guardados?')) {
+    storage.clear();
+    setAllInputValues(defaults);
+    recalc();
+  }
 });
 
 const btnEdit = document.getElementById('btnEdit');
@@ -975,6 +1120,15 @@ btnPresent.addEventListener('click', () => {
 
 const today = new Date();
 document.getElementById('p_date').textContent = 'Liquidación de mineral · ' + today.toLocaleDateString('es-PE', {day:'2-digit', month:'long', year:'numeric'});
+
+// ============ LOAD SAVED DATA ============
+const savedData = storage.load();
+if (savedData) {
+  setAllInputValues(savedData);
+  storage.showNotification('📂 Datos cargados del almacenamiento', 'info');
+} else {
+  setAllInputValues(defaults);
+}
 
 recalc();
 
