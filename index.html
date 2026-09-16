@@ -93,7 +93,8 @@ footer{ color:var(--present-text-soft); font-size:11px; margin-top:20px; }
 body.presenting .edit-only{ display:none !important; }
 body.presenting .wrap{ width:min(100% - 80px, 1500px); max-width:none; padding:42px 0 90px; }
 body.presenting .presentation-panel{ display:block; }
-body.presenting .mode-switch{ position:fixed; top:22px; right:28px; z-index:20; }
+body.presenting .mode-switch{ display:none !important; }
+body.presenting .p-title-block{ margin-bottom:34px; }
 
 .p-slab{ background:var(--readout-bg); border-radius:22px; min-height:320px; padding:58px 64px; margin-bottom:28px; position:relative; overflow:hidden; box-shadow:0 22px 50px rgba(0,0,0,.24); }
 .p-slab::before{ content:""; position:absolute; top:0; right:0; bottom:0; width:6px; background:linear-gradient(180deg, var(--gold), var(--copper)); }
@@ -203,7 +204,7 @@ body.presenting .mode-switch{ position:fixed; top:22px; right:28px; z-index:20; 
       <h1>MINERO - YACHAQ</h1>
       <div class="p-subtitle">LIQUIDACIÓN MINERA</div>
     </div>
-    <div class="mode-switch" style="margin-left: auto; display:none;">
+    <div class="mode-switch" style="margin-left:auto; display:none;">
       <button id="btnEditMobile" class="active" type="button">Editar</button>
       <button id="btnPresentMobile" type="button">Presentar</button>
     </div>
@@ -489,9 +490,7 @@ btnPresent.addEventListener('click', () => {
   document.body.classList.add('presenting');
   btnPresent.classList.add('active');
   btnEdit.classList.remove('active');
-  btnEdit.style.display = 'none';
-  btnPresent.style.display = 'none';
-  btnFullscreen.style.display = 'inline-block';
+  document.querySelectorAll('.mode-switch').forEach(el => el.style.display = 'none');
 });
 
 btnFullscreen.addEventListener('click', async () => {
