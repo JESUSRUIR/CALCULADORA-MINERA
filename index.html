@@ -26,7 +26,7 @@
   --present-bg:#121815;
   --present-text:#F4F1E9;
   --present-text-soft:#A9B3AC;
-  --desktop-max:1500px;
+  --desktop-max:1240px;
   --desktop-gap:22px;
   --desktop-radius:14px;
 }
@@ -44,11 +44,26 @@ h1,h2,.display{ font-family:'Space Grotesk', sans-serif; }
 
 .wrap{ width:min(100% - 48px, var(--desktop-max)); margin:0 auto; padding:30px 0 70px; }
 
-.p-title-block{ display:flex; align-items:center; justify-content:space-between; gap:24px; text-align:left; background:#0D120F; border-radius:var(--desktop-radius); padding:22px 30px; margin-bottom:22px; }
-.p-title-block h1{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:clamp(26px,5vw,42px); letter-spacing:0.03em; color:var(--present-text); margin:0; }
-.p-title-block .p-subtitle{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.18em; color:var(--present-text-soft); margin:0; text-align:right; }
+.p-title-block{
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+  text-align:left; background:#0D120F; border-radius:var(--desktop-radius);
+  padding:22px 30px; margin-bottom:22px;
+}
+.p-title-block h1{
+  font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:clamp(26px,5vw,42px);
+  letter-spacing:0.03em; color:var(--present-text); margin:0;
+}
+.p-title-block .p-subtitle{
+  font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.18em;
+  color:var(--present-text-soft); margin:0; text-align:right;
+}
 
-header{ display:flex; align-items:center; justify-content:space-between; gap:16px; background:linear-gradient(135deg, #1B2420, #26342D); border:1px solid #34443A; border-radius:var(--desktop-radius); padding:26px 30px; margin-bottom:22px; box-shadow:0 14px 35px rgba(0,0,0,.18); }
+header{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  background:linear-gradient(135deg, #1B2420, #26342D); border:1px solid #34443A;
+  border-radius:var(--desktop-radius); padding:26px 30px; margin-bottom:22px;
+  box-shadow:0 14px 35px rgba(0,0,0,.18);
+}
 header .eyebrow{ color:var(--present-text-soft); font-size:12.5px; margin:0 0 6px; }
 header h1{ font-size:clamp(28px, 3vw, 44px); margin:0 0 10px; letter-spacing:-0.01em; color:var(--present-text); }
 header p{ color:var(--present-text-soft); max-width:720px; margin:0; font-size:14px; }
@@ -57,7 +72,11 @@ header p{ color:var(--present-text-soft); max-width:720px; margin:0; font-size:1
 .mode-switch button{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; font-weight:500; padding:8px 12px; background:transparent; border:none; border-radius:4px; color:var(--ink-soft); cursor:pointer; }
 .mode-switch button.active{ background:var(--ink); color:var(--panel); }
 
-.readout{ background:var(--readout-bg); border-radius:var(--desktop-radius); padding:0; display:grid; grid-template-columns:repeat(4, minmax(150px,1fr)); gap:0; margin-bottom:22px; border:1px solid #35463C; box-shadow:0 14px 32px rgba(0,0,0,.16); }
+.readout{
+  background:var(--readout-bg); border-radius:var(--desktop-radius); padding:0;
+  display:grid; grid-template-columns:repeat(4, minmax(150px,1fr)); gap:0; margin-bottom:22px;
+  border:1px solid #35463C; box-shadow:0 14px 32px rgba(0,0,0,.16);
+}
 .readout .cell{ min-height:130px; padding:26px 28px; border-right:1px solid #35463C; display:flex; flex-direction:column; justify-content:center; }
 .readout .cell:last-child{ border-right:none; }
 .readout .cell .lbl{ color:#9FB3A9; font-size:11.5px; letter-spacing:0.03em; margin-bottom:6px; }
@@ -73,7 +92,7 @@ header p{ color:var(--present-text-soft); max-width:720px; margin:0; font-size:1
 .field{ padding:7px 0; }
 .field label{ display:block; font-size:12px; color:var(--ink-soft); margin-bottom:4px; min-height:35px; display:flex; align-items:flex-end; font-weight:600; }
 .field .inrow{ display:flex; align-items:center; gap:6px; }
-.field input[type=number]{ font-family:'IBM Plex Mono', monospace; font-size:14px; font-weight:500; text-align:right; width:100%; min-height:42px; padding:10px 12px; background:var(--input-bg); border:1px solid var(--input-border); border-radius:4px; color:var(--ink); transition:.2s ease; }
+.field input[type=number]{ font-family:'IBM Plex Mono', monospace; font-size:14px; font-weight:500; text-align:right; width:100%; min-height:42px; padding:10px 12px; background:var(--input-bg); border:1px solid var(--input-border); border-radius:4px; color:var(--ink); }
 .field input[type=number]:focus{ outline:none; border-color:#E5B82F; box-shadow:0 0 0 3px rgba(229,184,47,.20); background:#FFFDF7; }
 .field .unit{ color:var(--ink-soft); font-size:11px; white-space:nowrap; }
 
@@ -91,37 +110,37 @@ footer{ color:var(--present-text-soft); font-size:11px; margin-top:20px; }
 
 .presentation-panel{ display:none; }
 body.presenting .edit-only{ display:none !important; }
-body.presenting .wrap{ width:min(100% - 32px, 1200px); padding:12px 0 30px; }
+body.presenting .wrap{ width:min(100% - 32px, 1100px); padding:20px 0 60px; }
 body.presenting .presentation-panel{ display:block; }
 body.presenting .p-title-block{ display:none !important; }
 body.presenting .mode-switch{ display:none !important; }
 
-.p-slab{ background:linear-gradient(135deg, #1B2420, #1D2B26); border:1px solid rgba(255,255,255,0.06); border-radius:22px; min-height:260px; padding:42px 42px 28px; margin-bottom:20px; position:relative; overflow:hidden; box-shadow:0 30px 60px rgba(0,0,0,.25); }
+.p-slab{ background:linear-gradient(135deg, #1B2420, #1D2B26); border:1px solid rgba(255,255,255,0.06); border-radius:18px; min-height:260px; padding:34px 36px 24px; margin-bottom:18px; position:relative; overflow:hidden; box-shadow:0 18px 36px rgba(0,0,0,.18); }
 .p-slab::before{ content:""; position:absolute; top:0; right:0; bottom:0; width:6px; background:linear-gradient(180deg, var(--gold), var(--copper)); }
-.p-slab .p-eyebrow{ color:#9FB3A9; font-size:13px; letter-spacing:0.12em; margin-bottom:12px; text-transform:uppercase; }
-.p-slab .p-total-lbl{ color:#9FB3A9; font-size:14px; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.12em; }
-.p-slab .p-total{ color:var(--readout-fg); font-size:clamp(54px,7vw,104px); font-weight:700; line-height:1; letter-spacing:-0.03em; }
+.p-slab .p-eyebrow{ color:#9FB3A9; font-size:12px; letter-spacing:0.12em; margin-bottom:12px; text-transform:uppercase; }
+.p-slab .p-total-lbl{ color:#9FB3A9; font-size:13px; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.12em; }
+.p-slab .p-total{ color:var(--readout-fg); font-size:clamp(42px,4vw,74px); font-weight:700; line-height:1; letter-spacing:-0.03em; }
 .p-slab .p-total .cur{ font-size:0.48em; color:#7C8B82; margin-right:6px; vertical-align:2px; }
-.p-slab .p-sub{ margin-top:22px; display:flex; gap:42px; flex-wrap:wrap; }
+.p-slab .p-sub{ margin-top:18px; display:flex; gap:28px; flex-wrap:wrap; }
 .p-slab .p-sub .item .l{ color:#7C8B82; font-size:11px; margin-bottom:5px; text-transform:uppercase; letter-spacing:.08em; }
-.p-slab .p-sub .item .v{ color:var(--readout-fg-2); font-size:22px; font-weight:600; }
+.p-slab .p-sub .item .v{ color:var(--readout-fg-2); font-size:20px; font-weight:600; }
 
-.p-metals{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:16px; margin-bottom:18px; }
-.p-metal{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px 18px; min-height:180px; box-shadow:0 10px 24px rgba(0,0,0,.12); }
-.p-metal .name{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:18px; margin-bottom:14px; display:flex; align-items:center; gap:8px; color:#000000; }
+.p-metals{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:14px; margin-bottom:18px; }
+.p-metal{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px 16px; min-height:170px; box-shadow:0 8px 24px rgba(0,0,0,.12); }
+.p-metal .name{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:17px; margin-bottom:12px; display:flex; align-items:center; gap:8px; color:#000000; }
 .p-metal .swatch{ width:10px; height:10px; border-radius:50%; display:inline-block; }
 .p-metal.cu .swatch{ background:var(--copper); }
 .p-metal.ag .swatch{ background:var(--silver); }
 .p-metal.au .swatch{ background:var(--gold); }
-.p-metal .row{ display:flex; justify-content:space-between; font-size:12.5px; padding:7px 0; color:var(--ink-soft); font-weight:600; }
+.p-metal .row{ display:flex; justify-content:space-between; font-size:12.5px; padding:6px 0; color:var(--ink-soft); font-weight:600; }
 .p-metal .row .v{ color:var(--ink); font-weight:700; }
 .p-metal .row.pay{ border-top:1px solid var(--line); margin-top:10px; padding-top:12px; font-size:14px; }
 .p-metal .row.pay .v{ color:var(--ink); font-weight:800; }
 
-.p-breakdown{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:8px 18px; margin-bottom:12px; box-shadow:0 10px 24px rgba(0,0,0,.12); }
-.p-breakdown .p-title{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:18px; padding:18px 0 10px; color:#000000; }
-.p-breakdown .line{ min-height:48px; align-items:center; font-size:13.5px; }
-.p-breakdown .line .v{ font-weight:700; font-size:15px; }
+.p-breakdown{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:8px 18px; margin-bottom:12px; box-shadow:0 8px 24px rgba(0,0,0,.12); }
+.p-breakdown .p-title{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:16px; padding:14px 0 8px; color:#000000; }
+.p-breakdown .line{ min-height:46px; align-items:center; font-size:13px; }
+.p-breakdown .line .v{ font-weight:700; font-size:14px; }
 
 .p-footer-note{ display:flex; justify-content:space-between; align-items:baseline; color:var(--ink-soft); font-size:11px; padding:8px 4px; }
 
@@ -142,44 +161,27 @@ body.presenting .mode-switch{ display:none !important; }
 .history-item-actions{ display:flex; gap:6px; margin-top:8px; }
 .history-item-actions button{ font-size:10.5px; padding:5px 8px; }
 
-.p-slab, .p-metal, .group, .lines, .history{ animation:fadeUp .45s ease both; }
-@keyframes fadeUp{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
-
-@media (min-width:1600px){
-  .grid{ grid-template-columns:repeat(4, minmax(210px, 1fr)); }
-  .p-slab{ min-height:318px; }
-}
-
 @media (max-width:1000px){
-  .wrap, body.presenting .wrap{ width:min(100% - 36px, 900px); }
   .readout{ grid-template-columns:repeat(2, minmax(160px,1fr)); }
   .readout .cell:nth-child(2){ border-right:none; }
   .readout .cell:nth-child(-n+2){ border-bottom:1px solid #35463C; }
   .grid{ grid-template-columns:repeat(2, 1fr); }
   .history-list{ grid-template-columns:repeat(2, 1fr); }
-  .p-slab{ padding:34px 26px; }
-  .p-slab .p-total{ font-size:clamp(44px, 9vw, 88px); }
 }
 
 @media (max-width:600px){
-  .wrap, body.presenting .wrap{ width:calc(100% - 28px); padding-top:20px; }
-  .p-title-block{ display:block; text-align:center; }
-  .p-title-block .p-subtitle{ text-align:center; margin-top:8px; }
+  .wrap{ width:calc(100% - 28px); }
   .readout, .grid, .history-list, .p-metals{ grid-template-columns:1fr; }
   .readout .cell{ border-right:none; border-bottom:1px solid #35463C; }
   .readout .cell:last-child{ border-bottom:none; }
   header{ flex-direction:column; }
   .mode-switch{ position:static; width:max-content; margin:0 auto 25px; }
-  .p-slab{ padding:28px 20px; }
-  .p-slab .p-total{ font-size:clamp(40px, 15vw, 72px); }
-  .p-slab .p-sub{ gap:18px; }
-  .p-slab .p-sub .item .v{ font-size:19px; }
   .history-item-main{ flex-direction:column; gap:4px; }
   .history-item-total{ align-self:flex-start; }
 }
 
 @media print{
-  .mode-switch, footer, #resetBtn, .history, .presentation-panel{ display:none !important; }
+  .mode-switch, footer, #resetBtn, .history{ display:none !important; }
   body{ background:#fff; }
 }
 </style>
@@ -195,7 +197,6 @@ body.presenting .mode-switch{ display:none !important; }
     <div class="mode-switch">
       <button id="btnEdit" class="active" type="button">Editar</button>
       <button id="btnPresent" type="button">Presentar</button>
-      <button id="btnFullscreen" type="button">Pantalla completa</button>
     </div>
   </header>
 
@@ -203,10 +204,6 @@ body.presenting .mode-switch{ display:none !important; }
     <div>
       <h1>MINERO - YACHAQ</h1>
       <div class="p-subtitle">LIQUIDACIÓN MINERA</div>
-    </div>
-    <div class="mode-switch" style="margin-left:auto; display:none;">
-      <button id="btnEditMobile" class="active" type="button">Editar</button>
-      <button id="btnPresentMobile" type="button">Presentar</button>
     </div>
   </div>
 
@@ -475,7 +472,6 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 
 const btnEdit = document.getElementById('btnEdit');
 const btnPresent = document.getElementById('btnPresent');
-const btnFullscreen = document.getElementById('btnFullscreen');
 
 btnEdit.addEventListener('click', () => {
   if (document.body.classList.contains('presenting')) return;
@@ -485,38 +481,12 @@ btnEdit.addEventListener('click', () => {
 });
 
 btnPresent.addEventListener('click', () => {
-  if (document.body.classList.contains('presenting')) return;
   document.body.classList.add('presenting');
   btnPresent.classList.add('active');
   btnEdit.classList.remove('active');
-  document.querySelectorAll('.mode-switch').forEach(el => el.style.display = 'none');
-  if (document.documentElement.requestFullscreen) {
-    document.documentElement.requestFullscreen().catch(() => {});
-  }
 });
 
-btnFullscreen.addEventListener('click', async () => {
-  try {
-    if (!document.fullscreenElement) {
-      await document.documentElement.requestFullscreen();
-      btnFullscreen.textContent = 'Salir de pantalla completa';
-    } else {
-      await document.exitFullscreen();
-      btnFullscreen.textContent = 'Pantalla completa';
-    }
-  } catch(error) {
-    console.warn('La pantalla completa no está disponible.', error);
-  }
-});
-
-document.addEventListener('fullscreenchange', () => {
-  if (!document.fullscreenElement) {
-    btnFullscreen.textContent = 'Pantalla completa';
-  }
-});
-
-const today = new Date();
-document.getElementById('p_date').textContent = 'Liquidación de mineral · ' + today.toLocaleDateString('es-PE', {day:'2-digit', month:'long', year:'numeric'});
+document.getElementById('p_date').textContent = 'Liquidación de mineral · ' + new Date().toLocaleDateString('es-PE', {day:'2-digit', month:'long', year:'numeric'});
 
 function getHistory(){
   try {
