@@ -203,9 +203,9 @@ body.presenting .mode-switch{ position:fixed; top:22px; right:28px; z-index:20; 
       <h1>MINERO - YACHAQ</h1>
       <div class="p-subtitle">LIQUIDACIÓN MINERA</div>
     </div>
-    <div class="mode-switch" style="margin-left: auto;">
-      <button id="btnEditMobile" class="active" type="button" style="display:none;">Editar</button>
-      <button id="btnPresentMobile" type="button" style="display:none;">Presentar</button>
+    <div class="mode-switch" style="margin-left: auto; display:none;">
+      <button id="btnEditMobile" class="active" type="button">Editar</button>
+      <button id="btnPresentMobile" type="button">Presentar</button>
     </div>
   </div>
 
@@ -478,15 +478,20 @@ const btnPresent = document.getElementById('btnPresent');
 const btnFullscreen = document.getElementById('btnFullscreen');
 
 btnEdit.addEventListener('click', () => {
+  if (document.body.classList.contains('presenting')) return;
   document.body.classList.remove('presenting');
   btnEdit.classList.add('active');
   btnPresent.classList.remove('active');
 });
 
 btnPresent.addEventListener('click', () => {
+  if (document.body.classList.contains('presenting')) return;
   document.body.classList.add('presenting');
   btnPresent.classList.add('active');
   btnEdit.classList.remove('active');
+  btnEdit.style.display = 'none';
+  btnPresent.style.display = 'none';
+  btnFullscreen.style.display = 'inline-block';
 });
 
 btnFullscreen.addEventListener('click', async () => {
