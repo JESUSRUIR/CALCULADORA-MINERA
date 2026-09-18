@@ -1,123 +1,174 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Calculadora y liquidación minera Minero - Yachaq">
-  <title>Minero - Yachaq | Calculadora Minera</title>
-  <link rel="stylesheet" href="../css/styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Minero - Yachaq | Liquidación Minera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-  <main class="app-shell">
-    <header class="topbar">
-      <div>
-        <p class="eyebrow">Sistema de liquidación</p>
-        <h1>Calculadora Minera</h1>
-        <p class="muted">Cálculo, resumen y presentación profesional de resultados.</p>
-      </div>
-      <nav class="view-switch" aria-label="Vista de la calculadora">
-        <button id="editBtn" class="active" type="button">Editar</button>
-        <button id="presentBtn" type="button">Presentar</button>
-      </nav>
-    </header>
+<div class="wrap">
 
-    <section class="hero">
-      <p class="eyebrow">Liquidación minera</p>
-      <h2>Minero - Yachaq</h2>
-    </section>
+<header class="topbar edit-only">
+  <div>
+    <p class="eyebrow">Sistema de liquidación</p>
+    <h1>Calculadora Minera</h1>
+    <p>Control, valorización y presentación profesional de resultados.</p>
+  </div>
+  <div class="switch">
+    <button id="editBtn" class="active" type="button">Editar</button>
+    <button id="presentBtn" type="button">Presentar</button>
+  </div>
+</header>
 
-    <section class="readout edit-only">
-      <article><span>Concentrado seco</span><strong><b id="outTmns">0.00</b> TM</strong></article>
-      <article class="accent"><span>Pago total a recibir</span><strong>$<b id="outTotal">0.00</b></strong></article>
-      <article><span>Cotización Cu</span><strong><b id="outCu">0.00</b> $/lb</strong></article>
-      <article><span>Pago por TMNS</span><strong><b id="outTm">0.00</b> $/TM</strong></article>
-    </section>
+<section class="hero">
+  <h2>Minero - Yachaq</h2>
+  <div>Liquidación minera · Documento de referencia</div>
+</section>
 
-    <section class="card edit-only">
-      <h2>Información del documento</h2>
-      <div class="grid">
-        <label>Empresa<input id="empresa" value="Minero - Yachaq"></label>
-        <label>Cliente<input id="cliente" placeholder="Nombre del cliente"></label>
-        <label>Responsable<input id="responsable" placeholder="Nombre del responsable"></label>
-        <label>Fecha<input id="fecha" type="date"></label>
-        <label class="wide">Observaciones<textarea id="observaciones" placeholder="Notas para el documento"></textarea></label>
-      </div>
-    </section>
+<section class="readout edit-only">
+  <div class="dry"><small>Concentrado seco</small><strong><span id="out_tmns">0.00</span><span class="unit">TM</span></strong></div>
+  <div class="total"><small>Pago total a recibir</small><strong>$<span id="out_total">0.00</span><span class="unit">USD</span></strong></div>
+  <div><small>Cotización Cu</small><strong><span id="out_cu">0.00</span><span class="unit">$/lb</span></strong></div>
+  <div><small>Pago por TMNS</small><strong><span id="out_tm">0.00</span><span class="unit">$/TM</span></strong></div>
+</section>
 
-    <section class="card edit-only">
-      <h2>Mineral y planta</h2>
-      <div class="grid">
-        <label>Tonelaje<input id="tonelaje" type="number" value="150"><small>TM</small></label>
-        <label>Ley de Cobre<input id="leyCu" type="number" value="2.2"><small>%</small></label>
-        <label>Ley de Plata<input id="leyAg" type="number" value="0"><small>oz/tm</small></label>
-        <label>Ley de Oro<input id="leyAu" type="number" value="0"><small>oz/tm</small></label>
-        <label>Humedad<input id="h2o" type="number" value="10.1"><small>%</small></label>
-        <label>Merma<input id="merma" type="number" value="1"><small>%</small></label>
-        <label>Ley Cu en concentrado<input id="leyCuConc" type="number" value="25.23"><small>%</small></label>
-        <label>Alquiler de planta<input id="alquiler" type="number" value="55"><small>$/TMH</small></label>
-        <label>Adelanto<input id="adelanto" type="number" value="0"><small>USD</small></label>
-      </div>
-    </section>
+<section class="panel edit-only">
+<h3>Información del documento</h3>
+<div class="grid">
+  <div class="field"><label>Empresa / razón social</label><input id="empresa" value="Minero - Yachaq"></div>
+  <div class="field"><label>Cliente o proveedor</label><input id="cliente" placeholder="Nombre del cliente"></div>
+  <div class="field"><label>Responsable</label><input id="responsable" placeholder="Nombre del responsable"></div>
+  <div class="field"><label>Fecha del documento</label><input id="fechaDoc" type="date"></div>
+  <div class="field" style="grid-column:span 2"><label>Observaciones</label><textarea id="observaciones" placeholder="Notas adicionales para el documento..."></textarea></div>
+</div>
+</section>
 
-    <section class="card edit-only">
-      <h2>Cotizaciones</h2>
-      <div class="grid">
-        <label>Cobre<input id="cuPrice" type="number" value="6.29"><small>$/lb</small></label>
-        <label>Plata<input id="agPrice" type="number" value="57.5"><small>$/oz</small></label>
-        <label>Oro<input id="auPrice" type="number" value="4043.6"><small>$/oz</small></label>
-      </div>
-    </section>
+<section class="panel edit-only">
+<h3>Mineral y planta</h3>
+<div class="grid">
+<div class="field"><label>Tonelaje</label><div class="inrow"><input id="tonelaje" type="number" value="150"><span class="unit">TM</span></div></div>
+<div class="field"><label>Ley de Cobre (Cu)</label><div class="inrow"><input id="leyCu" type="number" value="2.2"><span class="unit">%</span></div></div>
+<div class="field"><label>Ley de Plata (Ag)</label><div class="inrow"><input id="leyAg" type="number" value="0"><span class="unit">oz/tm</span></div></div>
+<div class="field"><label>Ley de Oro (Au)</label><div class="inrow"><input id="leyAu" type="number" value="0"><span class="unit">oz/tm</span></div></div>
+<div class="field"><label>Humedad</label><div class="inrow"><input id="h2o" type="number" value="10.1"><span class="unit">%</span></div></div>
+<div class="field"><label>Merma</label><div class="inrow"><input id="merma" type="number" value="1"><span class="unit">%</span></div></div>
+<div class="field"><label>Ley Cu en concentrado</label><div class="inrow"><input id="leyCuConc" type="number" value="25.23"><span class="unit">%</span></div></div>
+<div class="field"><label>Alquiler de planta</label><div class="inrow"><input id="alquiler" type="number" value="55"><span class="unit">$/TMH</span></div></div>
+<div class="field"><label>Adelanto</label><div class="inrow"><input id="adelanto" type="number" value="0"><span class="unit">USD</span></div></div>
+</div>
+</section>
 
-    <section class="card edit-only">
-      <h2>Términos del contrato</h2>
-      <div class="grid">
-        <label>Pagable Cu<input id="pagableCu" type="number" value="100"></label>
-        <label>Deducción Cu<input id="deducCu" type="number" value="1.35"></label>
-        <label>Refinación Cu<input id="refCu" type="number" value=".19"></label>
-        <label>Protección Cu<input id="proteccion" type="number" value=".1"></label>
-        <label>Pagable Ag<input id="pagableAg" type="number" value="90"></label>
-        <label>Deducción Ag<input id="deducAg" type="number" value="2"></label>
-        <label>Refinación Ag<input id="refAg" type="number" value="1.2"></label>
-        <label>Pagable Au<input id="pagableAu" type="number" value="90"></label>
-        <label>Deducción Au<input id="deducAu" type="number" value="60"></label>
-        <label>Refinación Au<input id="refAu" type="number" value="12"></label>
-        <label>Maquila<input id="maquila" type="number" value="175"></label>
-        <label>Análisis<input id="analisis" type="number" value="100"></label>
-        <label>Traslado<input id="traslado" type="number" value="55"></label>
-      </div>
-    </section>
+<section class="panel edit-only">
+<h3>Cotizaciones</h3>
+<div class="grid">
+<div class="field"><label>Cobre</label><div class="inrow"><input id="cuPrice" type="number" value="6.29"><span class="unit">$/lb</span></div></div>
+<div class="field"><label>Plata</label><div class="inrow"><input id="agPrice" type="number" value="57.5"><span class="unit">$/oz</span></div></div>
+<div class="field"><label>Oro</label><div class="inrow"><input id="auPrice" type="number" value="4043.6"><span class="unit">$/oz</span></div></div>
+</div>
+</section>
 
-    <section class="card summary edit-only">
-      <div><span>Total pago por metales</span><b id="linePago">—</b></div>
-      <div><span>Reducciones</span><b id="lineReducciones">—</b></div>
-      <div><span>Valor neto + IGV − detracción</span><b id="lineNeto">—</b></div>
-      <div><span>Alquiler + adelanto</span><b id="lineDescuento">—</b></div>
-      <div class="grand"><span>Total a pagar</span><b>$<i id="lineTotal">—</i></b></div>
-    </section>
+<section class="panel edit-only">
+<h3>Términos del contrato</h3>
+<div class="grid">
+<div class="field"><label>Pagable Cu</label><input id="pagableCu" type="number" value="100"></div>
+<div class="field"><label>Deducción Cu</label><input id="deducCu" type="number" value="1.35"></div>
+<div class="field"><label>Refinación Cu</label><input id="refCu" type="number" value=".19"></div>
+<div class="field"><label>Protección Cu</label><input id="proteccion" type="number" value=".1"></div>
+<div class="field"><label>Pagable Ag</label><input id="pagableAg" type="number" value="90"></div>
+<div class="field"><label>Deducción Ag</label><input id="deducAg" type="number" value="2"></div>
+<div class="field"><label>Refinación Ag</label><input id="refAg" type="number" value="1.2"></div>
+<div class="field"><label>Pagable Au</label><input id="pagableAu" type="number" value="90"></div>
+<div class="field"><label>Deducción Au</label><input id="deducAu" type="number" value="60"></div>
+<div class="field"><label>Refinación Au</label><input id="refAu" type="number" value="12"></div>
+<div class="field"><label>Maquila</label><input id="maquila" type="number" value="175"></div>
+<div class="field"><label>Análisis</label><input id="analisis" type="number" value="100"></div>
+<div class="field"><label>Traslado</label><input id="traslado" type="number" value="55"></div>
+</div>
+</section>
 
-    <div class="actions edit-only">
-      <button id="resetBtn" class="btn" type="button">Restaurar valores</button>
-      <button id="pdfBtn" class="btn primary" type="button">Exportar PDF</button>
-    </div>
+<section class="panel edit-only">
+<div class="line"><span>Total pago por metales</span><b id="l_pago">—</b></div>
+<div class="line"><span>Reducciones</span><b id="l_red">—</b></div>
+<div class="line"><span>Valor neto + IGV − detracción</span><b id="l_neto">—</b></div>
+<div class="line"><span>Alquiler + adelanto</span><b id="l_desc">—</b></div>
+<div class="line grand"><span>Total a pagar</span><b>$<span id="l_total">—</span></b></div>
+</section>
 
-    <section class="card edit-only">
-      <div class="section-head"><h2>Histórico de cálculos</h2><div class="actions"><button id="saveBtn" class="btn primary" type="button">Guardar</button><button id="clearBtn" class="btn" type="button">Borrar histórico</button></div></div>
-      <div class="history-tools"><input id="search" placeholder="Buscar"><select id="sort"><option value="new">Más recientes</option><option value="old">Más antiguos</option><option value="high">Mayor total</option><option value="low">Menor total</option></select></div>
-      <p id="empty" class="muted">No hay cálculos guardados.</p><div id="historyList" class="history-list"></div>
-    </section>
+<div class="actions actions-row edit-only">
+<button id="resetBtn" class="btn" type="button">Restaurar valores</button>
+<button id="pdfBtn" class="btn primary" type="button">Descargar PDF profesional</button>
+<button id="presentFromEditBtn" class="btn" type="button">Vista para cliente</button>
+</div>
 
-    <section class="presentation">
-      <div class="presentation-actions"><button id="returnBtn" class="btn primary" type="button">Volver a editar</button><button id="presentationPdfBtn" class="btn" type="button">Descargar PDF</button></div>
-      <article class="presentation-card">
-        <p class="eyebrow">Documento de liquidación minera</p><h2 id="pEmpresa">Minero - Yachaq</h2><p class="date" id="pFecha"></p>
-        <div class="presentation-total"><span>Total a pagar</span><strong>USD $<b id="pTotal">0.00</b></strong></div>
-        <div class="presentation-meta"><span>Cliente<strong id="pCliente">No especificado</strong></span><span>Responsable<strong id="pResponsable">No especificado</strong></span><span>Tonelaje<strong id="pTonelaje">0.00 TM</strong></span><span>Concentrado seco<strong id="pTmns">0.00 TM</strong></span></div>
-        <div class="metal-grid"><div><h3>🟤 Cobre</h3><p>Ley <b id="pCuLey">—</b></p><p>Cotización <b id="pCuPrice">—</b></p><p>Pago <b id="pCuPay">—</b></p></div><div><h3>⚪ Plata</h3><p>Ley <b id="pAgLey">—</b></p><p>Cotización <b id="pAgPrice">—</b></p><p>Pago <b id="pAgPay">—</b></p></div><div><h3>🟡 Oro</h3><p>Ley <b id="pAuLey">—</b></p><p>Cotización <b id="pAuPrice">—</b></p><p>Pago <b id="pAuPay">—</b></p></div></div>
-        <div class="presentation-breakdown"><h3>Resumen de liquidación</h3><p>Pago por metales <b id="pPago">—</b></p><p>Reducciones <b id="pReducciones">—</b></p><p>Valor neto <b id="pNeto">—</b></p><p>Alquiler + adelanto <b id="pDescuento">—</b></p><p class="grand">Total a pagar <b>$<i id="pGrand">—</i></b></p></div>
-        <p class="note"><b>Observaciones:</b> <span id="pObservaciones">Sin observaciones.</span></p><p class="note">Documento generado con fines de referencia. No sustituye la liquidación oficial de planta.</p>
-      </article>
-    </section>
-  </main>
-  <script src="../javascript/app.js"></script>
+<section class="panel edit-only">
+<div class="history-head">
+<h3>Histórico de cálculos</h3>
+<div class="actions">
+<button id="saveBtn" class="btn primary" type="button">Guardar cálculo</button>
+<button id="clearBtn" class="btn" type="button">Borrar histórico</button>
+<button id="exportBtn" class="btn" type="button">Exportar JSON</button>
+<button id="importBtn" class="btn" type="button">Importar JSON</button>
+<input id="fileInput" type="file" accept="application/json" hidden>
+</div>
+</div>
+<div class="history-tools">
+<input id="searchInput" placeholder="Buscar por nombre o fecha">
+<input id="fromDate" type="date" title="Desde">
+<input id="toDate" type="date" title="Hasta">
+<select id="sortSelect"><option value="new">Más recientes</option><option value="old">Más antiguos</option><option value="high">Mayor total</option><option value="low">Menor total</option></select>
+</div>
+<div id="empty" class="empty">No hay cálculos guardados.</div>
+<div id="historyList" class="history-list"></div>
+</section>
+
+<div class="footer edit-only">Los cálculos se guardan localmente en este navegador.</div>
+
+<section class="presentation">
+<div class="present-tools"><button id="returnEditBtn" class="btn primary" type="button">Volver a editar</button></div>
+<div class="presentation-card">
+<div class="cover">
+<p class="eyebrow">Documento de liquidación minera</p>
+<h2 id="p_empresa">Minero - Yachaq</h2>
+<div class="amount-label">Total a pagar</div>
+<div class="amount">USD $<span id="p_total">0.00</span></div>
+<div class="meta">
+<div><small>Fecha</small><strong id="p_fecha">—</strong></div>
+<div><small>Tonelaje</small><strong id="p_ton">0.00 TM</strong></div>
+<div><small>Concentrado seco</small><strong id="p_tmns">0.00 TM</strong></div>
+<div><small>Pago por TMNS</small><strong id="p_tm">0.00 USD</strong></div>
+</div>
+<hr style="border:0;border-top:1px solid #405248;margin:20px 0">
+<div class="client-info">
+<div>CLIENTE<b id="p_cliente">No especificado</b></div>
+<div>RESPONSABLE<b id="p_responsable">No especificado</b></div>
+<div>REFERENCIA<b>MINERO-YACHAQ</b></div>
+</div>
+</div>
+
+<div class="metal-grid">
+<div class="metal"><h3>🟤 Cobre</h3><p>Ley <b id="p_cu_ley">—</b></p><p>Cotización <b id="p_cu_price">—</b></p><p>Pago <b id="p_cu_pay">—</b></p></div>
+<div class="metal"><h3>⚪ Plata</h3><p>Ley <b id="p_ag_ley">—</b></p><p>Cotización <b id="p_ag_price">—</b></p><p>Pago <b id="p_ag_pay">—</b></p></div>
+<div class="metal"><h3>🟡 Oro</h3><p>Ley <b id="p_au_ley">—</b></p><p>Cotización <b id="p_au_price">—</b></p><p>Pago <b id="p_au_pay">—</b></p></div>
+</div>
+
+<div class="breakdown">
+<h3>Resumen de liquidación</h3>
+<div class="line"><span>Pago total por metales</span><b id="p_pago">—</b></div>
+<div class="line"><span>Reducciones</span><b id="p_red">—</b></div>
+<div class="line"><span>Valor neto + IGV − detracción</span><b id="p_neto">—</b></div>
+<div class="line"><span>Alquiler + adelanto</span><b id="p_desc">—</b></div>
+<div class="line grand"><span>Total a pagar</span><b>$<span id="p_grand">—</span></b></div>
+</div>
+<div class="note"><b>Observaciones:</b> <span id="p_observaciones">Sin observaciones.</span></div>
+<div class="note">Documento generado con fines de referencia. No sustituye la liquidación oficial de planta.</div>
+</div>
+</section>
+</div>
+<script src="../javascript/app.js"></script>
 </body>
 </html>
